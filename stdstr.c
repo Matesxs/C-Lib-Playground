@@ -3,11 +3,11 @@
 #include "stdlib.h"
 #include "stdio.h"
 
-string_t lastCreatedString = NULL;
+_string_data lastCreatedString = NULL;
 
-char **stringCreate()
+string_t stringCreate()
 {
-  string_t tmp = (string_t)malloc(sizeof(_string_data));
+  _string_data tmp = (_string_data)malloc(sizeof(struct string));
   if (tmp == NULL) return NULL;
 
   tmp->buffer = (char*)malloc(INIT_STRING_SIZE * sizeof(char));
@@ -30,19 +30,19 @@ char **stringCreate()
   tmp->allocSize = INIT_STRING_SIZE;
 
   lastCreatedString = tmp;
-  return (char**)tmp;
+  return (string_t)tmp;
 }
 
-char **stringCreateS(const char *string)
+string_t stringCreateS(const char *string)
 {
-  char **tmp = stringCreate();
+  string_t tmp = stringCreate();
   tmp = stringSet(tmp, string);
   return tmp;
 }
 
-void stringDestroy(char **string)
+void stringDestroy(string_t string)
 {
-  string_t tmp = (string_t)string;
+  _string_data tmp = (_string_data)string;
 
   if (tmp->buffer != NULL)
   {
@@ -70,14 +70,14 @@ void stringGlobalDestroy()
 {
   if (lastCreatedString == NULL) return;
 
-  string_t tmp = lastCreatedString->_prev_string;
-  stringDestroy((char**)lastCreatedString);
+  _string_data tmp = lastCreatedString->_prev_string;
+  stringDestroy((string_t)lastCreatedString);
   lastCreatedString = tmp;
 
   stringGlobalDestroy();
 }
 
-string_t _getMoreSpace(string_t string, size_t wantedSize)
+_string_data _getMoreSpace(_string_data string, size_t wantedSize)
 {
   if (string == NULL) return NULL;
 
@@ -91,7 +91,7 @@ string_t _getMoreSpace(string_t string, size_t wantedSize)
     char* tmp = (char*)realloc(string->buffer, wantedSize);
     if (tmp == NULL)
     {
-      stringDestroy((char**)string);
+      stringDestroy((string_t)string);
       return NULL;
     }
 
@@ -101,9 +101,9 @@ string_t _getMoreSpace(string_t string, size_t wantedSize)
   return string;
 }
 
-char **stringInsert(char **string, const char *src)
+string_t stringInsert(string_t string, const char *src)
 {
-  string_t tmp = (string_t)string;
+  _string_data tmp = (_string_data)string;
 
   if (tmp == NULL) return false;
 
@@ -117,10 +117,10 @@ char **stringInsert(char **string, const char *src)
   tmp->buffer[wantedSize - 1] = 0;
   tmp->length = wantedSize - 1;
 
-  return (char**)string;
+  return (string_t)string;
 }
 
-char **stringSet(char **string, const char *src)
+string_t stringSet(string_t string, const char *src)
 {
   if (string == NULL) return NULL;
 
@@ -130,15 +130,15 @@ char **stringSet(char **string, const char *src)
   return string;
 }
 
-char *stringGetCstring(char **string)
+char *stringGetCstring(string_t string)
 {
   if (string == NULL) return NULL;
-  return ((string_t)string)->buffer;
+  return ((_string_data)string)->buffer;
 }
 
-char **stringTrimFirst(char **string)
+string_t stringTrimFirst(string_t string)
 {
-  string_t tmpS = (string_t)string;
+  _string_data tmpS = (_string_data)string;
 
   if (tmpS == NULL) return NULL;
 
@@ -164,12 +164,12 @@ char **stringTrimFirst(char **string)
 
   tmpS->length--;
 
-  return (char**)tmpS;
+  return (string_t)tmpS;
 }
 
-char **stringTrimLast(char **string)
+string_t stringTrimLast(string_t string)
 {
-  string_t tmp = (string_t)string;
+  _string_data tmp = (_string_data)string;
 
   if (string == NULL) return NULL;
 
@@ -179,12 +179,12 @@ char **stringTrimLast(char **string)
     tmp->length--;
   }
 
-  return (char**)tmp;
+  return (string_t)tmp;
 }
 
-char **stringFormat(char **string, const char *format, ...)
+string_t stringFormat(string_t string, const char *format, ...)
 {
-  string_t tmpS = (string_t)string;
+  _string_data tmpS = (_string_data)string;
 
   if (string == NULL) return NULL;
 
@@ -209,7 +209,7 @@ char **stringFormat(char **string, const char *format, ...)
 
     tmp[length] = 0;
 
-    tmpS = (string_t)stringSet(string, tmp);
+    tmpS = (_string_data)stringSet(string, tmp);
     free(tmp);
   }
   else
@@ -217,12 +217,12 @@ char **stringFormat(char **string, const char *format, ...)
     tmpS->length = length;
   }
 
-  return (char**)tmpS;
+  return (string_t)tmpS;
 }
 
-char **stringClear(char **string)
+string_t stringClear(string_t string)
 {
-  string_t tmpS = (string_t)string;
+  _string_data tmpS = (_string_data)string;
 
   if (tmpS == NULL) return NULL;
 
@@ -231,5 +231,5 @@ char **stringClear(char **string)
 
   tmpS->length = 0;
 
-  return (char**)tmpS;
+  return (string_t)tmpS;
 }

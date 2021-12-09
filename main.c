@@ -4,10 +4,10 @@
 
 int main()
 {
-  char **string = stringCreate();
-  char **string1 = stringCreate();
-  char **string2 = stringCreate();
-  char **string3 = stringCreate();
+  string_t string = stringCreate();
+  string_t string1 = stringCreate();
+  string_t string2 = stringCreate();
+  string_t string3 = stringCreate();
 
   printf("%s\n", *string);
   printf("%s\n", stringGetCstring(string1));

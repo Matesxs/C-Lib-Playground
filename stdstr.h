@@ -17,8 +17,8 @@ struct string
   struct string *_next_string;
 };
 
-typedef struct string _string_data;
-typedef _string_data *string_t;
+typedef struct string *_string_data;
+typedef char **string_t;
 
 char **stringCreate();
 void stringDestroy(char **string);
