@@ -2,6 +2,7 @@
 #include "string.h"
 #include "stdlib.h"
 #include "stdio.h"
+#include "stdint.h"
 
 _string_data lastCreatedString = NULL;
 
@@ -10,6 +11,8 @@ string_t stringCreate()
   _string_data tmp = (_string_data)malloc(sizeof(struct string));
   if (tmp == NULL) return NULL;
 
+  memset(tmp, 0, sizeof(struct string));
+
   tmp->buffer = (char*)malloc(INIT_STRING_SIZE * sizeof(char));
   if (tmp->buffer == NULL)
   {
@@ -17,7 +20,6 @@ string_t stringCreate()
     return NULL;
   }
 
-  tmp->_next_string = NULL;
   tmp->_prev_string = lastCreatedString;
   if (tmp->_prev_string != NULL)
   {
@@ -35,9 +37,67 @@ string_t stringCreate()
 
 string_t stringCreateS(const char *string)
 {
-  string_t tmp = stringCreate();
-  tmp = stringSet(tmp, string);
-  return tmp;
+  _string_data tmp = (_string_data)malloc(sizeof(struct string));
+  if (tmp == NULL) return NULL;
+
+  memset(tmp, 0, sizeof(struct string));
+
+  size_t src_len = strlen(string) + 1;
+
+  tmp->buffer = (char*)malloc(src_len * sizeof(char));
+  if (tmp->buffer == NULL)
+  {
+    free(tmp);
+    return NULL;
+  }
+
+  tmp->allocSize = src_len;
+  tmp->_prev_string = lastCreatedString;
+
+  if (tmp->_prev_string != NULL)
+  {
+    tmp->_prev_string->_next_string = tmp;
+  }
+
+  tmp->buffer[0] = 0;
+
+  tmp = (_string_data)stringSet((string_t)tmp, string);
+
+  lastCreatedString = tmp;
+  return (string_t)tmp;
+}
+
+string_t stringCreateF(const char *format, ...)
+{
+  _string_data tmpS = (_string_data)stringCreate();
+  if (tmpS == NULL) return NULL;
+
+  va_list arg;
+
+  va_start (arg, format);
+  size_t length = vsnprintf(tmpS->buffer, tmpS->allocSize, format, arg);
+  va_end (arg);
+
+  if (length >= tmpS->allocSize)
+  {
+    char *tmp = (char*)malloc((length + 1) * sizeof(char));
+    if (tmp == NULL)
+    {
+      stringDestroy((string_t)tmpS);
+      return NULL;
+    }
+
+    va_start (arg, format);
+    vsnprintf(tmp, length + 1, format, arg);
+    va_end (arg);
+
+    tmp[length] = 0;
+
+    tmpS = (_string_data)stringSet((string_t)tmpS, tmp);
+    free(tmp);
+  }
+
+  return (string_t)tmpS;
 }
 
 void stringDestroy(string_t string)
@@ -113,7 +173,7 @@ string_t stringInsert(string_t string, const char *src)
   tmp = _getMoreSpace(tmp, wantedSize);
   if (string == NULL) return NULL;
 
-  strcpy(&tmp->buffer[tmp->length], src);
+  strcpy((char*)((uint64_t)tmp->buffer + tmp->length), src);
   tmp->buffer[wantedSize - 1] = 0;
   tmp->length = wantedSize - 1;
 
@@ -155,7 +215,7 @@ string_t stringTrimFirst(string_t string)
       return NULL;
     }
 
-    strcpy(tmp, &tmpS->buffer[1]);
+    strcpy(tmp, (char*)((uint64_t)tmpS->buffer + 1));
     strcpy(tmpS->buffer, tmp);
     free(tmp);
 

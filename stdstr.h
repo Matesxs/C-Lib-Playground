@@ -21,6 +21,9 @@ typedef struct string *_string_data;
 typedef char **string_t;
 
 char **stringCreate();
+string_t stringCreateS(const char *string);
+string_t stringCreateF(const char *format, ...);
+
 void stringDestroy(char **string);
 void stringGlobalDestroy();
 

@@ -5,14 +5,14 @@
 int main()
 {
   string_t string = stringCreate();
-  string_t string1 = stringCreate();
-  string_t string2 = stringCreate();
-  string_t string3 = stringCreate();
+  string_t string1 = stringCreateS("Some static string");
+  string_t string2 = stringCreateS("String that will get destroyed");
+  string_t string3 = stringCreateF("%s and some other shit %d, %f\n", "Some dinamicaly formated string", 123456, 14.666);
 
   printf("%s\n", *string);
   printf("%s\n", stringGetCstring(string1));
   printf("%s\n", stringGetCstring(string2));
-  printf("%s\n", stringGetCstring(string3));
+  printf("%s\n", *string3);
 
   stringDestroy(string2);
 
