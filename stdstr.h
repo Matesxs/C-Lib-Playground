@@ -20,18 +20,18 @@ struct string
 typedef struct string _string_data;
 typedef _string_data *string_t;
 
-string_t stringCreate();
-void stringDestroy(string_t string);
+char **stringCreate();
+void stringDestroy(char **string);
 void stringGlobalDestroy();
 
-char *stringGetCstring(string_t string);
+char *stringGetCstring(char **string);
 
-string_t stringInsert(string_t string, const char *src);
-string_t stringSet(string_t string, const char *src);
+char **stringInsert(char **string, const char *src);
+char **stringSet(char **string, const char *src);
 
-string_t stringTrimFirst(string_t string);
-string_t stringTrimLast(string_t string);
+char **stringTrimFirst(char **string);
+char **stringTrimLast(char **string);
 
-string_t stringFormat(string_t string, const char *format, ...);
+char **stringFormat(char **string, const char *format, ...);
 
-string_t stringClear(string_t string);
+char **stringClear(char **string);
