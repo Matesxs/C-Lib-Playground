@@ -67,34 +67,34 @@ void shared_mem_test()
 {
   sharedMemoryInit();
 
-  int *test1 = shared_malloc(sizeof(int) * 500);
+  int *test1 = smalloc(sizeof(int) * 500);
   test1[1] = 5555;
 
-  int *test2 = shared_malloc(sizeof(int) * 500);
+  int *test2 = smalloc(sizeof(int) * 500);
   test2[1] = 5555;
 
-  int *test3 = shared_malloc(sizeof(int) * 500);
+  int *test3 = smalloc(sizeof(int) * 500);
   test3[1] = 5555;
 
-  int *test4 = shared_malloc(sizeof(int) * 500);
+  int *test4 = smalloc(sizeof(int) * 500);
   test4[1] = 5555;
 
-  int *test5 = shared_malloc(sizeof(int) * 500);
+  int *test5 = smalloc(sizeof(int) * 500);
   test5[1] = 5555;
 
-  int *test6 = shared_malloc(sizeof(int) * 500);
+  int *test6 = smalloc(sizeof(int) * 500);
   test6[1] = 5555;
 
-  int *test7 = shared_malloc(sizeof(int) * 500);
+  int *test7 = smalloc(sizeof(int) * 500);
   test7[1] = 5555;
 
-  int *test8 = shared_malloc(sizeof(int) * 500);
+  int *test8 = smalloc(sizeof(int) * 500);
   test8[1] = 5555;
 
-  int *test9 = shared_malloc(sizeof(int) * 500);
+  int *test9 = smalloc(sizeof(int) * 500);
   test9[1] = 5555;
 
-  int *test10 = shared_malloc(sizeof(int) * 500);
+  int *test10 = smalloc(sizeof(int) * 500);
   test10[1] = 5555;
 
   if (fork() == 0)
@@ -105,21 +105,24 @@ void shared_mem_test()
     return;
   }
 
-  int *test11 = shared_malloc(sizeof(int) * 500);
+  int *test11 = smalloc(sizeof(int) * 500);
   test11[1] = 5555;
 
-  int *test12 = shared_malloc(sizeof(int) * 500);
+  int *test12 = smalloc(sizeof(int) * 500);
   test12[1] = 5555;
 
-  int *test13 = shared_malloc(sizeof(int) * 500);
+  int *test13 = smalloc(sizeof(int) * 500);
   test13[1] = 5555;
 
-  int *test14 = shared_malloc(sizeof(int) * 500);
+  int *test14 = smalloc(sizeof(int) * 500);
   test14[1] = 5555;
 
   sleep(1);
 
   fprintf(stderr, "Parent: %d\n", test1[1]);
+
+  sfree(test1);
+  sfree(test2);
 
   sharedMemoryCleanup();
 }

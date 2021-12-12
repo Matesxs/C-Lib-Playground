@@ -12,4 +12,7 @@ void* shared_malloc(size_t size);
 void shared_free(void *pointer);
 void sharedMemoryCleanup();
 
+#define sfree(pointer) shared_free((void*)(pointer))
+#define smalloc(size) shared_malloc(size)
+
 #endif //LIB_PLAYGROUND_SHARED_MEMORY_H
