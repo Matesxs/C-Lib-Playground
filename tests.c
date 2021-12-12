@@ -4,6 +4,7 @@
 
 #include "tests.h"
 
+#include <unistd.h>
 #include "stdio.h"
 #include "stdstr/stdstr.h"
 #include "shared_memory/shared_memory.h"
@@ -67,6 +68,57 @@ void shared_mem_test()
 
   int *test1 = shared_malloc(sizeof(int) * 500);
   test1[1] = 5555;
+
+  int *test2 = shared_malloc(sizeof(int) * 500);
+  test2[1] = 5555;
+
+  int *test3 = shared_malloc(sizeof(int) * 500);
+  test3[1] = 5555;
+
+  int *test4 = shared_malloc(sizeof(int) * 500);
+  test4[1] = 5555;
+
+  int *test5 = shared_malloc(sizeof(int) * 500);
+  test5[1] = 5555;
+
+  int *test6 = shared_malloc(sizeof(int) * 500);
+  test6[1] = 5555;
+
+  int *test7 = shared_malloc(sizeof(int) * 500);
+  test7[1] = 5555;
+
+  int *test8 = shared_malloc(sizeof(int) * 500);
+  test8[1] = 5555;
+
+  int *test9 = shared_malloc(sizeof(int) * 500);
+  test9[1] = 5555;
+
+  int *test10 = shared_malloc(sizeof(int) * 500);
+  test10[1] = 5555;
+
+  if (fork() == 0)
+  {
+    // Here is forked process
+    fprintf(stderr, "Child: %d\n", test1[1]);
+    test1[1] = 3;
+    return;
+  }
+
+  int *test11 = shared_malloc(sizeof(int) * 500);
+  test11[1] = 5555;
+
+  int *test12 = shared_malloc(sizeof(int) * 500);
+  test12[1] = 5555;
+
+  int *test13 = shared_malloc(sizeof(int) * 500);
+  test13[1] = 5555;
+
+  int *test14 = shared_malloc(sizeof(int) * 500);
+  test14[1] = 5555;
+
+  sleep(1);
+
+  fprintf(stderr, "Parent: %d\n", test1[1]);
 
   sharedMemoryCleanup();
 }
