@@ -5,7 +5,7 @@ OBJECT_FOLDER=obj
 SOURCE_FOLDER=.
 
 CC=gcc
-CFLAGS=-std=gnu99 -Wall -Wextra -Werror -pedantic -g -lm
+CFLAGS=-std=gnu99 -Wall -Wextra -Werror -pedantic -g -lm -lpthread
 SUFFIX=c
 
 ADDITIONAL_CLEANUP= docs
