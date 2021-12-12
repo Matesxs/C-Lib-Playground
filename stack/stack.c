@@ -1,5 +1,7 @@
 #include "stack.h"
 
+#include <stdlib.h>
+
 #define INITIAL_SIZE 20
 
 #define STACKDEF(T, TNAME)                                                                       \
@@ -62,3 +64,5 @@
   {                                                                                              \
     return stack->top == -1;                                                                     \
   }
+
+STACKDEF(int,int)

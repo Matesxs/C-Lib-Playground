@@ -7,5 +7,6 @@
 
 void stdlib_test();
 void shared_mem_test();
+void stack_test();
 
 #endif //LIB_PLAYGROUND_TESTS_H

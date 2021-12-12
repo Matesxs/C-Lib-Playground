@@ -8,6 +8,7 @@
 #include "stdio.h"
 #include "stdstr/stdstr.h"
 #include "shared_memory/shared_memory.h"
+#include "stack/stack.h"
 
 void stdlib_test()
 {
@@ -121,4 +122,23 @@ void shared_mem_test()
   fprintf(stderr, "Parent: %d\n", test1[1]);
 
   sharedMemoryCleanup();
+}
+
+void stack_test()
+{
+  stack_int_t stack;
+  stack_int_init(&stack);
+
+  stack_int_push(&stack, 1);
+  stack_int_push(&stack, 2);
+  stack_int_push(&stack, 3);
+
+  fprintf(stderr, "%d\n", stack_int_top(&stack));
+  fprintf(stderr, "%d\n", stack_int_pop(&stack));
+  fprintf(stderr, "%d\n", stack_int_pop(&stack));
+  fprintf(stderr, "%d\n", stack_int_pop(&stack));
+  fprintf(stderr, "%d\n", stack_int_pop(&stack));
+  fprintf(stderr, "%d\n", stack_int_empty(&stack));
+
+  stack_int_destroy(&stack);
 }
