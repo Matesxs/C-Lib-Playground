@@ -1,7 +1,5 @@
 #include "stack.h"
 
-#include <stdlib.h>
-
 #define INITIAL_SIZE 20
 
 #define STACKDEF(T, TNAME)                                                                       \
